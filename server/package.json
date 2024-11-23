@@ -16,7 +16,8 @@
 		"cors": "^2.8.5",
 		"dotenv": "^16.4.5",
 		"express": "^4.21.1",
-		"mongoose": "^8.8.2"
+		"mongoose": "^8.8.2",
+		"nodemailer": "^6.9.16"
 	},
 	"devDependencies": {
 		"nodemon": "^3.1.7"
