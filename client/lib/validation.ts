@@ -19,6 +19,15 @@ export const emailSchema = z.object({
 	email: z.string().email({ message: 'Invalid email' }),
 })
 
+export const productSchema = z.object({
+	title: z.string().min(3, { message: 'Name must be at least 3 characters' }),
+	price: z.string(),
+	description: z.string().min(10, { message: 'Description must be at least 10 characters' }),
+	category: z.string(),
+	image: z.string(),
+	imageKey: z.string(),
+})
+
 export const passwordSchema = z
 	.object({
 		oldPassword: z.string().min(6, { message: 'Password must be at least 6 characters' }),
