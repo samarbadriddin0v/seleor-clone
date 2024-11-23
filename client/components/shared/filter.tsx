@@ -4,12 +4,15 @@ import { Search } from 'lucide-react'
 import { Input } from '../ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select'
 import { categories } from '@/lib/constants'
-import { formUrlQuery, removeUrlQuery } from '@/lib/utils'
+import { cn, formUrlQuery, removeUrlQuery } from '@/lib/utils'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { debounce } from 'lodash'
-import { useCallback } from 'react'
+import { FC, useCallback } from 'react'
 
-const Filter = () => {
+interface Props {
+	showCategory?: boolean
+}
+const Filter: FC<Props> = ({ showCategory }) => {
 	const searchParams = useSearchParams()
 	const router = useRouter()
 
@@ -37,7 +40,7 @@ const Filter = () => {
 	const handleSearchDebounce = useCallback(debounce(onInputSearch, 300), [])
 
 	return (
-		<div className='gap-1 max-md:w-full grid grid-cols-3'>
+		<div className={cn('gap-1 max-md:w-full grid', showCategory ? 'grid-cols-3' : 'grid-cols-2')}>
 			<div className='flex items-center bg-secondary max-md:w-1/2 border'>
 				<Input placeholder='Qidirish' className='text-xs border-none no-focus' onChange={handleSearchDebounce} />
 				<Search className='mr-2 cursor-pointer text-muted-foreground' />
@@ -52,19 +55,20 @@ const Filter = () => {
 					<SelectItem value='oldest'>Oldest</SelectItem>
 				</SelectContent>
 			</Select>
-
-			<Select onValueChange={onCategoryChange}>
-				<SelectTrigger className='bg-secondary text-xs max-md:w-1/2'>
-					<SelectValue placeholder='Select category' className='text-muted-foreground' />
-				</SelectTrigger>
-				<SelectContent>
-					{categories.map(category => (
-						<SelectItem value={category} key={category}>
-							{category}
-						</SelectItem>
-					))}
-				</SelectContent>
-			</Select>
+			{showCategory && (
+				<Select onValueChange={onCategoryChange}>
+					<SelectTrigger className='bg-secondary text-xs max-md:w-1/2'>
+						<SelectValue placeholder='Select category' className='text-muted-foreground' />
+					</SelectTrigger>
+					<SelectContent>
+						{categories.map(category => (
+							<SelectItem value={category} key={category}>
+								{category}
+							</SelectItem>
+						))}
+					</SelectContent>
+				</Select>
+			)}
 		</div>
 	)
 }
