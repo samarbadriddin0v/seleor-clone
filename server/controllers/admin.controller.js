@@ -18,12 +18,8 @@ class AdminController {
 	// [GET] /admin/products
 	async getProducts(req, res, next) {
 		try {
-			const userId = this.userId
-			const user = await userModel.findById(userId)
-			if (!user) return res.json({ failure: 'User not found' })
-			if (user.role !== 'admin') return res.json({ failure: 'User is not admin' })
 			const products = await productModel.find()
-			return res.json({ success: 'Get products successfully', products })
+			return res.json({ products })
 		} catch (error) {
 			next(error)
 		}
@@ -70,15 +66,11 @@ class AdminController {
 	// [POST] /admin/create-product
 	async createProduct(req, res, next) {
 		try {
-			const data = req.body
-			const userId = this.userId
-			const user = await userModel.findById(userId)
-			if (!user) return res.json({ failure: 'User not found' })
-			if (user.role !== 'admin') return res.json({ failure: 'User is not admin' })
-			const newProduct = await productModel.create(data)
+			const newProduct = await productModel.create(req.body)
 			if (!newProduct) return res.json({ failure: 'Failed while creating product' })
-			return res.json({ success: 'Product created successfully' })
+			return res.json({ status: 201 })
 		} catch (error) {
+			console.log(error)
 			next(error)
 		}
 	}
