@@ -11,6 +11,7 @@ export interface QueryProps {
 export interface ReturnActionType {
 	user: IUser
 	failure: string
+	status: number
 }
 
 export interface IProduct {

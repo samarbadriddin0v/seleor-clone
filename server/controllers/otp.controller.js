@@ -5,7 +5,7 @@ class OtpController {
 		try {
 			const { email } = req.body
 			await mailService.sendOtpMail(email)
-			res.json({ message: 'OTP sent successfully' })
+			res.json({ status: 200 })
 		} catch (error) {
 			next(error)
 		}
