@@ -15,9 +15,7 @@ const EmailForm = () => {
 		defaultValues: { email: '' },
 	})
 
-	async function onSubmit(values: z.infer<typeof emailSchema>) {
-		console.log(values)
-	}
+	async function onSubmit(values: z.infer<typeof emailSchema>) {}
 
 	return (
 		<Form {...form}>

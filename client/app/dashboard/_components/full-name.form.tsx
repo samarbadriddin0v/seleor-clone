@@ -15,9 +15,7 @@ const FullNameForm = () => {
 		defaultValues: { fullName: '' },
 	})
 
-	async function onSubmit(values: z.infer<typeof fullNameSchema>) {
-		console.log(values)
-	}
+	async function onSubmit(values: z.infer<typeof fullNameSchema>) {}
 
 	return (
 		<Form {...form}>

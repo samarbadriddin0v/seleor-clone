@@ -28,9 +28,7 @@ const Page = () => {
 		defaultValues: { confirmPassword: '', newPassword: '', oldPassword: '' },
 	})
 
-	async function onSubmit(values: z.infer<typeof passwordSchema>) {
-		console.log(values)
-	}
+	async function onSubmit(values: z.infer<typeof passwordSchema>) {}
 
 	return (
 		<>

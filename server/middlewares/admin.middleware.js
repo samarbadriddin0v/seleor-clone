@@ -20,7 +20,6 @@ module.exports = async function (req, res, next) {
 		}
 
 		const user = await userModel.findById(userId)
-		console.log(user)
 
 		if (!user) {
 			return next(BaseError.Unauthorized())

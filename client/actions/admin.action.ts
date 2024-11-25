@@ -22,6 +22,26 @@ export const getProducts = actionClient.schema(searchParamsSchema).action<Return
 	return JSON.parse(JSON.stringify(data))
 })
 
+export const getCustomers = actionClient.schema(searchParamsSchema).action<ReturnActionType>(async ({ parsedInput }) => {
+	const session = await getServerSession(authOptions)
+	const token = await generateToken(session?.currentUser?._id)
+	const { data } = await axiosClient.get('/api/admin/customers', {
+		headers: { Authorization: `Bearer ${token}` },
+		params: parsedInput,
+	})
+	return JSON.parse(JSON.stringify(data))
+})
+
+export const getOrders = actionClient.schema(searchParamsSchema).action<ReturnActionType>(async ({ parsedInput }) => {
+	const session = await getServerSession(authOptions)
+	const token = await generateToken(session?.currentUser?._id)
+	const { data } = await axiosClient.get('/api/admin/orders', {
+		headers: { Authorization: `Bearer ${token}` },
+		params: parsedInput,
+	})
+	return JSON.parse(JSON.stringify(data))
+})
+
 export const createProduct = actionClient.schema(productSchema).action<ReturnActionType>(async ({ parsedInput }) => {
 	const session = await getServerSession(authOptions)
 	const token = await generateToken(session?.currentUser?._id)
