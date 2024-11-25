@@ -4,9 +4,10 @@ import { axiosClient } from '@/http/axios'
 import { authOptions } from '@/lib/auth-options'
 import { generateToken } from '@/lib/generate-token'
 import { actionClient } from '@/lib/safe-action'
-import { idSchema, searchParamsSchema } from '@/lib/validation'
+import { idSchema, passwordSchema, searchParamsSchema, updateUserSchema } from '@/lib/validation'
 import { ReturnActionType } from '@/types'
 import { getServerSession } from 'next-auth'
+import { revalidatePath } from 'next/cache'
 
 export const getProducts = actionClient.schema(searchParamsSchema).action<ReturnActionType>(async ({ parsedInput }) => {
 	const { data } = await axiosClient.get('/api/user/products', {
@@ -20,6 +21,13 @@ export const getProduct = actionClient.schema(idSchema).action<ReturnActionType>
 	return JSON.parse(JSON.stringify(data))
 })
 
+export const getStatistics = actionClient.action<ReturnActionType>(async () => {
+	const session = await getServerSession(authOptions)
+	const token = await generateToken(session?.currentUser?._id)
+	const { data } = await axiosClient.get(`/api/user/statistics`, { headers: { Authorization: `Bearer ${token}` } })
+	return JSON.parse(JSON.stringify(data))
+})
+
 export const addFavorite = actionClient.schema(idSchema).action<ReturnActionType>(async ({ parsedInput }) => {
 	const session = await getServerSession(authOptions)
 	if (!session?.currentUser) return { failure: 'You must be logged in to add a favorite' }
@@ -29,5 +37,26 @@ export const addFavorite = actionClient.schema(idSchema).action<ReturnActionType
 		{ productId: parsedInput.id },
 		{ headers: { Authorization: `Bearer ${token}` } }
 	)
+	return JSON.parse(JSON.stringify(data))
+})
+
+export const updateUser = actionClient.schema(updateUserSchema).action<ReturnActionType>(async ({ parsedInput }) => {
+	const session = await getServerSession(authOptions)
+	if (!session?.currentUser) return { failure: 'You must be logged in to add a favorite' }
+	const token = await generateToken(session?.currentUser?._id)
+	const { data } = await axiosClient.put('/api/user/update-profile', parsedInput, {
+		headers: { Authorization: `Bearer ${token}` },
+	})
+	revalidatePath('/dashboard')
+	return JSON.parse(JSON.stringify(data))
+})
+
+export const updatePassword = actionClient.schema(passwordSchema).action<ReturnActionType>(async ({ parsedInput }) => {
+	const session = await getServerSession(authOptions)
+	if (!session?.currentUser) return { failure: 'You must be logged in to add a favorite' }
+	const token = await generateToken(session?.currentUser?._id)
+	const { data } = await axiosClient.put('/api/user/update-password', parsedInput, {
+		headers: { Authorization: `Bearer ${token}` },
+	})
 	return JSON.parse(JSON.stringify(data))
 })
