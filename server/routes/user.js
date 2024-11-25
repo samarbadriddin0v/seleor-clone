@@ -1,4 +1,5 @@
 const userController = require('../controllers/user.controller')
+const userMiddleware = require('../middlewares/user.middleware')
 
 const router = require('express').Router()
 
@@ -10,7 +11,7 @@ router.get('/transactions', userController.getTransactions)
 router.get('/favorites', userController.getFavorites)
 router.get('/statistics', userController.getStatistics)
 
-router.post('/add-favorite', userController.addFavorite)
+router.post('/add-favorite', userMiddleware, userController.addFavorite)
 
 router.put('/update-profile', userController.updateProfile)
 router.put('/update-password', userController.updatePassword)
