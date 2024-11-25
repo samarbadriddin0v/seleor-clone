@@ -10,6 +10,17 @@ import { notFound } from 'next/navigation'
 interface Props {
 	params: Params
 }
+export async function generateMetadata({ params }: Props) {
+	const { productId } = await params
+	const res = await getProduct({ id: productId })
+	const product = res?.data?.product
+
+	return {
+		title: product?.title,
+		description: product?.description,
+		openGraph: { images: product?.image },
+	}
+}
 const Page: FC<Props> = async ({ params }) => {
 	const { productId } = await params
 

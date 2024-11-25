@@ -72,7 +72,7 @@ export const addFavorite = actionClient.schema(idSchema).action<ReturnActionType
 
 export const stripeCheckout = actionClient.schema(idSchema).action<ReturnActionType>(async ({ parsedInput }) => {
 	const session = await getServerSession(authOptions)
-	if (!session?.currentUser) return { failure: 'You must be logged in to add a favorite' }
+	if (!session?.currentUser) return { failure: 'You must be logged in to apply for a product' }
 	const token = await generateToken(session?.currentUser?._id)
 	const { data } = await axiosClient.post(
 		'/api/user/stripe/checkout',
@@ -84,7 +84,7 @@ export const stripeCheckout = actionClient.schema(idSchema).action<ReturnActionT
 
 export const updateUser = actionClient.schema(updateUserSchema).action<ReturnActionType>(async ({ parsedInput }) => {
 	const session = await getServerSession(authOptions)
-	if (!session?.currentUser) return { failure: 'You must be logged in to add a favorite' }
+	if (!session?.currentUser) return { failure: 'You must be logged in to update your profile' }
 	const token = await generateToken(session?.currentUser?._id)
 	const { data } = await axiosClient.put('/api/user/update-profile', parsedInput, {
 		headers: { Authorization: `Bearer ${token}` },
@@ -95,7 +95,7 @@ export const updateUser = actionClient.schema(updateUserSchema).action<ReturnAct
 
 export const updatePassword = actionClient.schema(passwordSchema).action<ReturnActionType>(async ({ parsedInput }) => {
 	const session = await getServerSession(authOptions)
-	if (!session?.currentUser) return { failure: 'You must be logged in to add a favorite' }
+	if (!session?.currentUser) return { failure: 'You must be logged in to update your password' }
 	const token = await generateToken(session?.currentUser?._id)
 	const { data } = await axiosClient.put('/api/user/update-password', parsedInput, {
 		headers: { Authorization: `Bearer ${token}` },
@@ -105,7 +105,7 @@ export const updatePassword = actionClient.schema(passwordSchema).action<ReturnA
 
 export const deleteFavorite = actionClient.schema(idSchema).action<ReturnActionType>(async ({ parsedInput }) => {
 	const session = await getServerSession(authOptions)
-	if (!session?.currentUser) return { failure: 'You must be logged in to add a favorite' }
+	if (!session?.currentUser) return { failure: 'You must be logged in to delete a favorite' }
 	const token = await generateToken(session?.currentUser?._id)
 	const { data } = await axiosClient.delete(`/api/user/delete-favorite/${parsedInput.id}`, {
 		headers: { Authorization: `Bearer ${token}` },
