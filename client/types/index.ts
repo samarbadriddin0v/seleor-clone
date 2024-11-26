@@ -2,8 +2,8 @@ export interface ChildProps {
 	children: React.ReactNode
 }
 
-export type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>
-export type Params = Promise<{ productId: string }>
+export type SearchParams = { [key: string]: string | string[] | undefined }
+export type Params = { productId: string }
 
 export interface QueryProps {
 	params: string

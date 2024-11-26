@@ -13,7 +13,7 @@ interface Props {
 	searchParams: SearchParams
 }
 const Page: FC<Props> = async props => {
-	const searchParams = await props.searchParams
+	const searchParams = props.searchParams
 	const res = await getTransactions({
 		searchQuery: `${searchParams.q || ''}`,
 		filter: `${searchParams.filter || ''}`,

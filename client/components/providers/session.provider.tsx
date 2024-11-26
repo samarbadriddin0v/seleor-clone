@@ -2,14 +2,10 @@
 
 import { ChildProps } from '@/types'
 import { SessionProvider as Session } from 'next-auth/react'
-import { FC, Suspense } from 'react'
+import { FC } from 'react'
 
 const SessionProvider: FC<ChildProps> = ({ children }) => {
-	return (
-		<Session>
-			<Suspense fallback={null}>{children}</Suspense>
-		</Session>
-	)
+	return <Session>{children}</Session>
 }
 
 export default SessionProvider
