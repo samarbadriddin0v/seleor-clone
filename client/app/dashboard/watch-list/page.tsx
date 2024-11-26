@@ -4,7 +4,7 @@ import Filter from '@/components/shared/filter'
 import Pagination from '@/components/shared/pagination'
 import { Separator } from '@/components/ui/separator'
 import { SearchParams } from '@/types'
-import React, { FC } from 'react'
+import React, { FC, Suspense } from 'react'
 
 interface Props {
 	searchParams: SearchParams
@@ -27,7 +27,9 @@ const Page: FC<Props> = async props => {
 
 			<Separator className='my-3' />
 
-			<Filter showCategory />
+			<Suspense>
+				<Filter showCategory />
+			</Suspense>
 
 			{products && products.length === 0 && <div className='text-center mt-3 '>No products found.</div>}
 
