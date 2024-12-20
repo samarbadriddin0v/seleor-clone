@@ -21,6 +21,8 @@ class MailService {
 
 	async sendOtpMail(email) {
 		const otp = Math.floor(100000 + Math.random() * 900000)
+		console.log(otp)
+
 		const hashedOtp = await bcrypt.hash(otp.toString(), 10)
 		await otpModel.deleteMany({ email })
 		await otpModel.create({ email, otp: hashedOtp, expireAt: new Date(Date.now() + 5 * 60 * 1000) })

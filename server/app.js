@@ -7,6 +7,7 @@ const cookieParser = require('cookie-parser')
 const errorMiddleware = require('./middlewares/error.middleware')
 const stripeController = require('./controllers/stripe.controller')
 const { rateLimit } = require('express-rate-limit')
+const { HttpsProxyAgent } = require('https-proxy-agent')
 
 const app = express()
 
@@ -26,10 +27,25 @@ app.use('/api', require('./routes/index'))
 // Error handling
 app.use(errorMiddleware)
 
+// Setup proxy
+const setupProxy = () => {
+	const proxyUrl = process.env.QUOTAGUARDSHIELD_URL
+	if (proxyUrl) {
+		console.log('QuotaGuard proxy configured.')
+		const agent = new HttpsProxyAgent(proxyUrl)
+
+		const https = require('https')
+		https.globalAgent = agent
+	} else {
+		console.log('No QuotaGuard proxy configured.')
+	}
+}
+
 const bootstrap = async () => {
 	try {
 		const PORT = process.env.PORT || 5000
 		mongoose.connect(process.env.MONOGO_URI).then(() => console.log('Connected to MongoDB'))
+		setupProxy()
 		app.listen(PORT, () => console.log(`Server running on port ${PORT}`))
 	} catch (error) {
 		console.log('Error connecting to MongoDB:', error)

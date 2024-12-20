@@ -82,6 +82,44 @@ export const stripeCheckout = actionClient.schema(idSchema).action<ReturnActionT
 	return JSON.parse(JSON.stringify(data))
 })
 
+export const paymeCheckout = actionClient.schema(idSchema).action<ReturnActionType>(async ({ parsedInput }) => {
+	const session = await getServerSession(authOptions)
+	if (!session?.currentUser) return { failure: 'You must be logged in to apply for a product' }
+	const token = await generateToken(session?.currentUser?._id)
+	const { data } = await axiosClient.post(
+		'/api/payme/checkout',
+		{ productId: parsedInput.id },
+		{ headers: { Authorization: `Bearer ${token}` } }
+	)
+	return JSON.parse(JSON.stringify(data))
+})
+
+export const clickCheckout = actionClient.schema(idSchema).action<ReturnActionType>(async ({ parsedInput }) => {
+	const session = await getServerSession(authOptions)
+	if (!session?.currentUser) return { failure: 'You must be logged in to apply for a product' }
+	const token = await generateToken(session?.currentUser?._id)
+	const { data } = await axiosClient.post(
+		'/api/click/checkout',
+		{ productId: parsedInput.id },
+		{ headers: { Authorization: `Bearer ${token}` } }
+	)
+	return JSON.parse(JSON.stringify(data))
+})
+
+export const uzumCheckout = actionClient.schema(idSchema).action<ReturnActionType>(async ({ parsedInput }) => {
+	const session = await getServerSession(authOptions)
+	if (!session?.currentUser) return { failure: 'You must be logged in to apply for a product' }
+	const token = await generateToken(session?.currentUser?._id)
+	const { data } = await axiosClient.post(
+		'/api/uzum/checkout',
+		{ productId: parsedInput.id },
+		{ headers: { Authorization: `Bearer ${token}` } }
+	)
+	console.log(data)
+
+	return JSON.parse(JSON.stringify(data))
+})
+
 export const updateUser = actionClient.schema(updateUserSchema).action<ReturnActionType>(async ({ parsedInput }) => {
 	const session = await getServerSession(authOptions)
 	if (!session?.currentUser) return { failure: 'You must be logged in to update your profile' }

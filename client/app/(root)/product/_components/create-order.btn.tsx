@@ -1,6 +1,6 @@
 'use client'
 
-import { stripeCheckout } from '@/actions/user.action'
+import { clickCheckout, paymeCheckout, stripeCheckout, uzumCheckout } from '@/actions/user.action'
 import { Button } from '@/components/ui/button'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import useAction from '@/hooks/use-action'
@@ -22,7 +22,48 @@ const CreateOrderButton = () => {
 			return onError(res.data.failure)
 		}
 		if (res.data.status === 200) {
-			console.log(res.data.checkoutUrl)
+			window.open(res.data.checkoutUrl, '_self')
+		}
+	}
+
+	const onPayme = async () => {
+		setIsLoading(true)
+		const res = await paymeCheckout({ id: productId })
+		if (res?.serverError || res?.validationErrors || !res?.data) {
+			return onError('Something went wrong')
+		}
+		if (res.data.failure) {
+			return onError(res.data.failure)
+		}
+		if (res.data.status === 200) {
+			window.open(res.data.checkoutUrl, '_self')
+		}
+	}
+
+	const onClick = async () => {
+		setIsLoading(true)
+		const res = await clickCheckout({ id: productId })
+		if (res?.serverError || res?.validationErrors || !res?.data) {
+			return onError('Something went wrong')
+		}
+		if (res.data.failure) {
+			return onError(res.data.failure)
+		}
+		if (res.data.status === 200) {
+			window.open(res.data.checkoutUrl, '_self')
+		}
+	}
+
+	const onUzum = async () => {
+		setIsLoading(true)
+		const res = await uzumCheckout({ id: productId })
+		if (res?.serverError || res?.validationErrors || !res?.data) {
+			return onError('Something went wrong')
+		}
+		if (res.data.failure) {
+			return onError(res.data.failure)
+		}
+		if (res.data.status === 200) {
 			window.open(res.data.checkoutUrl, '_self')
 		}
 	}
@@ -39,13 +80,13 @@ const CreateOrderButton = () => {
 					<Button variant={'secondary'} disabled={isLoading} onClick={onStripe}>
 						<Image src={'/stripe.svg'} alt='stripe' width={70} height={50} className='cursor-pointer' />
 					</Button>
-					<Button variant={'secondary'} disabled={isLoading}>
+					<Button variant={'secondary'} disabled={isLoading} onClick={onClick}>
 						<Image src={'/click.svg'} alt='stripe' width={70} height={50} className='cursor-pointer' />
 					</Button>
-					<Button variant={'secondary'} disabled={isLoading}>
+					<Button variant={'secondary'} disabled={isLoading} onClick={onPayme}>
 						<Image src={'/payme.svg'} alt='stripe' width={70} height={50} className='cursor-pointer' />
 					</Button>
-					<Button variant={'secondary'} disabled={isLoading}>
+					<Button variant={'secondary'} disabled={isLoading} onClick={onUzum}>
 						<Image src={'/uzum.svg'} alt='stripe' width={70} height={50} className='cursor-pointer' />
 					</Button>
 				</div>
