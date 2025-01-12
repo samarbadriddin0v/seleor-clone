@@ -48,7 +48,7 @@ const SignInPage = () => {
 	return (
 		<Card className='w-1/2 p-4'>
 			<h1 className='text-xl font-bold'>Sign In</h1>
-			<p className='text-sm text-muted-foreground'>Welcome back! Please sign in to your account.</p>
+			<p className='text-sm text-muted-foreground'>Welcome back! Please sign in to your account and fill all fields.</p>
 			<Separator className='my-3' />
 			<Form {...form}>
 				<form onSubmit={form.handleSubmit(onSubmit)} className='space-y-2'>
